@@ -19,5 +19,5 @@ TEST:
 DATALOADER:
   NUM_WORKERS: 8
 DATASETS:
-  TRAIN: ("voc_2007_trainval",)
-  TEST: ("voc_2007_test",)
+  TRAIN: ("100DOH_hand_trainval",)
+  TEST: ("100DOH_hand_test",)

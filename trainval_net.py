@@ -23,24 +23,17 @@ from detectron2.config import get_cfg
 from detectron2.data import MetadataCatalog, DatasetCatalog
 from detectron2.engine import DefaultTrainer, default_argument_parser, default_setup, hooks, launch
 from detectron2.evaluation import (
-    CityscapesEvaluator,
-    COCOEvaluator,
-    COCOPanopticEvaluator,
     DatasetEvaluators,
-    LVISEvaluator,
     PascalVOCDetectionEvaluator,
-    SemSegEvaluator,
     verify_results,
 )
 from detectron2.modeling import GeneralizedRCNNWithTTA
 
-# more import
 from detectron2.data.datasets.pascal_voc import register_pascal_voc
 
-
 _datasets_root = "datasets"
-for d in ["train", "val"]:
-    register_pascal_voc(name=f'100DOH_hand_{d}', dirname=_datasets_root, split=d, year=2007)
+for d in ["trainval", "test"]:
+    register_pascal_voc(name=f'100DOH_hand_{d}', dirname=_datasets_root, split=d, year=2007, class_names=["hand"])
     MetadataCatalog.get(f'100DOH_hand_{d}').set(evaluator_type='pascal_voc')
 
 class Trainer(DefaultTrainer):
