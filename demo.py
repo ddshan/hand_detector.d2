@@ -1,26 +1,12 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
-"""
-Detection Training Script.
-
-This scripts reads a given config file and runs the training or evaluation.
-It is an entry point that is made to train standard models in detectron2.
-
-In order to let one script support training of many models,
-this script contains logic that are specific to these built-in models and therefore
-may not be suitable for your own project.
-For example, your research project perhaps only needs a single "evaluator".
-
-Therefore, we recommend you to use detectron2 as an library and take
-this file as an example of how to use the library.
-You may want to write your own script with your datasets and other customizations.
-"""
-
 
 import logging
 import os
 from collections import OrderedDict
 from tqdm import tqdm
 import torch
+import cv2
+import random
 
 import detectron2.utils.comm as comm
 from detectron2.checkpoint import DetectionCheckpointer
@@ -37,9 +23,6 @@ from detectron2.evaluation import (
 )
 from detectron2.modeling import GeneralizedRCNNWithTTA
 from detectron2.data.datasets import register_coco_instances
-import cv2
-import random
-
 from detectron2.data.datasets.pascal_voc import register_pascal_voc
 
 _datasets_root = "datasets"
@@ -47,8 +30,8 @@ for d in ["trainval", "test"]:
     register_pascal_voc(name=f'100DOH_hand_{d}', dirname=_datasets_root, split=d, year=2007, class_names=["hand"])
     MetadataCatalog.get(f'100DOH_hand_{d}').set(evaluator_type='pascal_voc')
 
-if __name__ == '__main__':
 
+def main():
     # load cfg and model
     cfg = get_cfg()
     cfg.merge_from_file("faster_rcnn_X_101_32x8d_FPN_3x_100DOH.yaml")
@@ -74,3 +57,6 @@ if __name__ == '__main__':
     print(outputs["instances"].pred_classes)
     print(outputs["instances"].pred_boxes)
     
+
+if __name__ == '__main__':
+    main()
